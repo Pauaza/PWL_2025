@@ -18,7 +18,7 @@ class WelcomeController extends Controller
 
 
 class PageController extends Controller{
-    public function index() {
+    public function Home() {
         return 'Selamat Datang';
     }
     

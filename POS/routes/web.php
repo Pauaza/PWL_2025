@@ -8,6 +8,9 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\SalesController;
+use App\Http\Controllers\UserController;
 
 //Photo route
 Route::resource('photos', PhotoController::class);
@@ -21,7 +24,7 @@ Route::resource('photos', PhotoController::class)->except([ 'create', 'store', '
 Route::get('/hello', [WelcomeController::class,'hello']);
 Route::get('/world', function () { return 'World';
 });
-Route::get('/index', [HomeController::class,'index']);
+Route::get('/Home', [HomeController::class,'Home']);
 Route::get('/about', [AboutController::class,'about']);
 //Route parameters
 Route::get('/user/{name}', function ($name) { return 'Paudra Akbar Buana'.$name;
@@ -31,11 +34,20 @@ Route::get('/posts/{post}/comments/{comment}', function ($postId, $commentId) {
     });
 Route::get('/articles/{id}', [ArticleController::class,'articles']);
 //Optional Parameters
-Route::get('/user/{name?}', function ($name='John') {return 'Paudra Akbar Buana'.$name;
-    });
+Route::get('/user/{id}/name/{name}', [UserController::class, 'showProfile']);
+
 //Memanggil view
 Route::get('/greeting', [WelcomeController::class, 'greeting']);
-    
+
+//Route Products category
+Route::prefix('category')->group(function () {
+    Route::get('/foodBeverage', [ProductsController::class, 'foodBeverage']);
+    Route::get('/beautyHealth', [ProductsController::class, 'beautyHealth']);
+    Route::get('/homeCare', [ProductsController::class, 'homeCare']);
+    Route::get('/babyKid', [ProductsController::class, 'babyKid']);
+});
+//Route Halaman Penjualan
+Route::get('/sales', [SalesController::class, 'index']);
 //Route Name
 // Route::get('/user/profile', function () {
 //     //
