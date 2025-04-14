@@ -1,4 +1,17 @@
 <div class="sidebar">
+    <!-- Foto Profil Pengguna -->
+    <div class="user-profile text-center p-3">
+        @if(auth()->user()->foto)
+            <img src="{{ asset('foto/' . auth()->user()->foto) }}" alt="Foto Profil" class="img-thumbnail" width="60">
+        @else
+            <img src="{{ asset('foto/default-avatar.png') }}" alt="Foto Profil" class="img-thumbnail" width="60">
+        @endif
+        <div class="user-info mt-2">
+            <p class="font-weight-bold">{{ auth()->user()->nama }}</p>
+            <small>{{ auth()->user()->email }}</small>
+        </div>
+    </div>
+
     <!-- SidebarSearch Form -->
     <div class="form-inline mt-2">
         <div class="input-group" data-widget="sidebar-search">
@@ -10,6 +23,7 @@
             </div>
         </div>
     </div>
+
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
