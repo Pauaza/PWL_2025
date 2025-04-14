@@ -5,8 +5,9 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
-                <a class="btn btn-sm btn-primary mt-1" href="{{ url('barang/create') }}">Tambah</a>
-                <button onclick="modalAction('{{ url('/barang/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah Ajax</button>
+                <a class="btn btn-sm btn-primary mt-1" href="{{ url('stok/create') }}">Tambah</a>
+                <button onclick="modalAction('{{ url('/stok/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah Ajax</button>
+
             </div>
         </div>
         <div class="card-body">
@@ -21,33 +22,32 @@
                     <div class="form-group row">
                         <label class="col-1 control-label col-form-label">Filter:</label>
                         <div class="col-3">
-                            <select class="form-control" id="kategori_id" name="kategori_id">
+                            <select class="form-control" id="user_id" name="user_id">
                                 <option value="">- Semua</option>
-                                @foreach ($kategori as $item)
-                                    <option value="{{ $item->kategori_id }}">{{ $item->kategori_nama }}</option>
+                                @foreach ($user as $item)
+                                    <option value="{{ $item->user_id }}">{{ $item->nama }}</option>
                                 @endforeach
                             </select>
-                            <small class="form-text text-muted">Kategori Barang</small>
+                            <small class="form-text text-muted">Nama User</small>
                         </div>
                     </div>
                 </div>
             </div>
-            <table class="table table-bordered table-striped table-hover table-sm" id="table_barang">
+            <table class="table table-bordered table-striped table-hover table-sm" id="table_stok">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Kode Barang</th>
                         <th>Nama Barang</th>
-                        <th>Kategori</th>
-                        <th>Harga Beli</th>
-                        <th>Harga Jual</th>
+                        <th>Nama User</th>
+                        <th>Tanggal Stok</th>
+                        <th>Jumlah Stok</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
             </table>
         </div>
-    </div> 
-    <div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" data- backdrop="static" data-keyboard="false" data-width="75%" aria-hidden="true"></div>
+    </div>
+    <div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" data- backdrop="static" data-keyboard="false" data-width="75%" aria-hidden="true"></div> 
 @endsection
 
 @push('css') 
@@ -62,14 +62,14 @@
         }
 
         $(document).ready(function() {
-            var dataBarang = $('#table_barang').DataTable({
+            var dataStok = $('#table_stok').DataTable({
                 serverSide: true,
                 ajax: {
-                    "url": "{{ url('barang/list') }}", 
+                    "url": "{{ url('stok/list') }}", 
                     "dataType": "json",
                     "type": "POST",
                     "data": function (d) {
-                        d.kategori_id = $('#kategori_id').val();
+                        d.user_id = $('#user_id').val(); // Filter berdasarkan user_id
                         d._token = "{{ csrf_token() }}"; // Tambahkan CSRF token
                     }
                 },
@@ -81,31 +81,25 @@
                         searchable: false
                     },
                     {
-                        data: "barang_kode",
-                        className: "",
-                        orderable: true,
-                        searchable: true
-                    },
-                    {
-                        data: "barang_nama",
-                        className: "",
-                        orderable: true,
-                        searchable: true
-                    },
-                    {
-                        data: "kategori.kategori_nama", // Mengambil nama kategori dari relasi
+                        data: "barang.barang_nama", // Mengambil nama barang dari relasi
                         className: "",
                         orderable: false,
                         searchable: false
                     },
                     {
-                        data: "harga_beli",
+                        data: "user.nama", // Mengambil nama user dari relasi
                         className: "",
-                        orderable: true,
+                        orderable: false,
                         searchable: false
                     },
                     {
-                        data: "harga_jual",
+                        data: "stok_tanggal",
+                        className: "",
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: "stok_jumlah",
                         className: "",
                         orderable: true,
                         searchable: false
@@ -119,8 +113,8 @@
                 ]
             });
 
-            $('#kategori_id').on('change', function() {
-                dataBarang.ajax.reload();
+            $('#user_id').on('change', function() {
+                dataStok.ajax.reload();
             });
         });
     </script> 
