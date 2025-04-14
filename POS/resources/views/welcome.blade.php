@@ -1,7 +1,8 @@
 @extends('layouts.template')
 
 @section('content')
-
+<div class="col-sm-6"><h1>Selamat Datang, {{ $namaUser }}!</h1><hr class="my-3 border-t border-white">
+    <h4>Berikut adalah detail data pada menu:</h4></div>
 
 <div class="row">
     <!-- Data User -->
