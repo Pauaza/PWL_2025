@@ -16,7 +16,7 @@ class WelcomeController extends Controller
         $jumlahUser = UserModel::count();
         $jumlahKategori = KategoriModel::count();
         $jumlahLevel = LevelModel::count();
-        $jumlahStok = StokModel::count(); // Atau sum('jumlah') tergantung struktur
+        $jumlahStok = StokModel::count(); 
         $jumlahBarang = BarangModel::count();
     
         // Aktifkan menu 'welcome'
